@@ -6,16 +6,18 @@ interface CardProps {
 }
 
 export function Card({ title }: CardProps) {
-  const generateColor = () => {
-    const randomColor = Math.floor(Math.random() * 16777215)
-      .toString(16)
-      .padStart(6, "0");
-    return `#${randomColor}`;
+  const getRandomColor = () => {
+    var color = "#";
+    var letters = "0123456789ABCDEF";
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   };
 
   return (
     <TouchableOpacity
-      style={[styles.container, { backgroundColor: generateColor() }]}
+      style={[styles.container, { backgroundColor: getRandomColor() }]}
       activeOpacity={0.8}
     >
       <Text style={styles.text}>{title}</Text>
