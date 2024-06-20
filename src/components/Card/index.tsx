@@ -1,11 +1,13 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
+import { router } from "expo-router";
 import { styles } from "./styles";
 
 interface CardProps {
+  id: number;
   title: string;
 }
 
-export function Card({ title }: CardProps) {
+export function Card({ id, title }: CardProps) {
   const getRandomColor = () => {
     var color = "#";
     var letters = "0123456789ABCDEF";
@@ -19,6 +21,7 @@ export function Card({ title }: CardProps) {
     <TouchableOpacity
       style={[styles.container, { backgroundColor: getRandomColor() }]}
       activeOpacity={0.8}
+      onPress={() => router.push({ pathname: `/note/${id}`, params: { title } })}
     >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>

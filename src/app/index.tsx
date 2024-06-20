@@ -1,14 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, Touchable } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { router } from "expo-router";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
 
-export default function NotesGroup() {
+export default function Home() {
   const notes = [
-    { title: "Cooking class", content: "Conteúdo da nota 1" },
-    { title: "Groceries", content: "Conteúdo da nota 2" },
-    { title: "Learning english", content: "Conteúdo da nota 3" },
-    { title: "Supermarket", content: "Conteúdo da nota 3" },
     { title: "Cooking class", content: "Conteúdo da nota 1" },
     { title: "Groceries", content: "Conteúdo da nota 2" },
     { title: "Learning english", content: "Conteúdo da nota 3" },
@@ -26,7 +22,7 @@ export default function NotesGroup() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.listWrapper}>
             {notes.map((note, index) => (
-              <Card key={index} title={note.title} />
+              <Card key={index} id={index} title={note.title} />
             ))}
           </View>
         </ScrollView>
@@ -35,7 +31,7 @@ export default function NotesGroup() {
         <Button
           icon="logo-google"
           title="Entrar com Google"
-          onPress={() => router.navigate("(auth)")}
+          //onPress={() => router.navigate("note")}
         />
       </View>
     </>

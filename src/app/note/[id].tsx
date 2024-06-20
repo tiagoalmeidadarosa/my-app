@@ -1,9 +1,12 @@
+import { useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Home() {
+export default function Note() {
+  const item = useLocalSearchParams();
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Olá, Usuário</Text>
+      <Text style={styles.text}>Olá, {item.title}</Text>
     </View>
   );
 }
