@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>Group of notes:</Text>
+        <Text style={styles.title}>Notes:</Text>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.listWrapper}>
             {notes.map((note, index) => (
