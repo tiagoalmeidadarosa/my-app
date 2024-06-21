@@ -2,11 +2,14 @@ import { useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 
 export default function Note() {
-  const item = useLocalSearchParams();
-  
+  let note = useLocalSearchParams();
+  if (note?.id === undefined) {
+    note = { title: "Title default", content: "Your content here" };
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Olá, {item.title}</Text>
+      <Text style={styles.text}>Olá, {note?.title}</Text>
     </View>
   );
 }

@@ -1,13 +1,13 @@
 import { Text, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { styles } from "./styles";
+import { Note } from "@prisma/client/react-native";
 
 interface CardProps {
-  id: number;
-  title: string;
+  note: Note;
 }
 
-export function Card({ id, title }: CardProps) {
+export function Card({ note }: CardProps) {
   const getRandomColor = () => {
     var color = "#";
     var letters = "0123456789ABCDEF";
@@ -21,9 +21,14 @@ export function Card({ id, title }: CardProps) {
     <TouchableOpacity
       style={[styles.container, { backgroundColor: getRandomColor() }]}
       activeOpacity={0.8}
-      onPress={() => router.push({ pathname: `/note/${id}`, params: { title } })}
+      onPress={() =>
+        router.push({
+          pathname: `/note`,
+          params: note,
+        })
+      }
     >
-      <Text style={styles.text}>{title}</Text>
+      <Text style={styles.text}>{note.title}</Text>
     </TouchableOpacity>
   );
 }
