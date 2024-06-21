@@ -12,9 +12,6 @@ export default function List() {
     { id: 97, title: "Learning english", content: "Conteúdo da nota 3" },
     { id: 98, title: "Supermarket", content: "Conteúdo da nota 3" },
     { id: 99, title: "Cooking class", content: "Conteúdo da nota 1" },
-    { id: 99, title: "Cooking class", content: "Conteúdo da nota 1" },
-    { id: 99, title: "Cooking class", content: "Conteúdo da nota 1" },
-    { id: 99, title: "Cooking class", content: "Conteúdo da nota 1" },
   ];
 
   return (

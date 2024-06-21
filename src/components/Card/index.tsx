@@ -24,7 +24,7 @@ export function Card({ data }: CardProps) {
       onPress={() =>
         router.push({
           pathname: `/note`,
-          params: data,
+          params: { id: data.id },
         })
       }
     >
