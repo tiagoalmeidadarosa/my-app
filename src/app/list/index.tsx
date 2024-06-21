@@ -4,7 +4,7 @@ import { Card } from "@/components/Card";
 import { ActionButton } from "@/components/ActionButton";
 import { prismaClient } from "@/services/db";
 
-export default function Home() {
+export default function List() {
   const notes = [
     ...prismaClient.note.useFindMany(),
     { id: 95, title: "Cooking class", content: "Conteúdo da nota 1" },

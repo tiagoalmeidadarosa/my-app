@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { initializeDb } from "@/services/db";
 import { SafeAreaView, Text } from "react-native";
-import Home from "./home";
+import List from "./list";
 
 export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
@@ -23,5 +23,5 @@ export default function App() {
     );
   }
 
-  return <Home />;
+  return <List />;
 }
