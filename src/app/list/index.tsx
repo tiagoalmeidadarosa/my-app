@@ -24,7 +24,7 @@ export default function List() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.listWrapper}>
             {notes.map((note, index) => (
-              <Card key={index} note={note} />
+              <Card key={index} data={note} />
             ))}
           </View>
         </ScrollView>
