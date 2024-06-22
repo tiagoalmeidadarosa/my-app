@@ -5,14 +5,7 @@ import { ActionButton } from "@/components/ActionButton";
 import { prismaClient } from "@/services/db";
 
 export default function List() {
-  const notes = [
-    ...prismaClient.note.useFindMany(),
-    { id: 95, title: "Cooking class", content: "Conteúdo da nota 1" },
-    { id: 96, title: "Groceries", content: "Conteúdo da nota 2" },
-    { id: 97, title: "Learning english", content: "Conteúdo da nota 3" },
-    { id: 98, title: "Supermarket", content: "Conteúdo da nota 3" },
-    { id: 99, title: "Cooking class", content: "Conteúdo da nota 1" },
-  ];
+  const notes = prismaClient.note.useFindMany();
 
   return (
     <>
@@ -26,7 +19,19 @@ export default function List() {
           </View>
         </ScrollView>
       </View>
-      <ActionButton icon="add" onPress={() => router.navigate("note")} />
+      <ActionButton
+        icon="add"
+        onPress={() =>
+          router.push({
+            pathname: `/note`,
+            params: {
+              id: 0,
+              title: "Default title",
+              content: "Content here...",
+            },
+          })
+        }
+      />
     </>
   );
 }

@@ -1,76 +1,84 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-  Text,
   View,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
   TextInput,
+  Button,
 } from "react-native";
 import { useEditorBridge, RichText, Toolbar } from "@10play/tentap-editor";
 import { prismaClient } from "@/services/db";
 import { Note } from "@prisma/client";
+import { router } from "expo-router";
 
 export default function Details() {
-  const { id } = useLocalSearchParams();
+  const params = useLocalSearchParams();
 
   const [note, setNote] = useState<Note>({
-    id: 0,
-    title: "Title default",
-    content: "Your content here...",
+    id: parseInt(String(params.id)),
+    title: params.title as string,
+    content: params.content as string,
   });
 
   useEffect(() => {
-    const getNote = async () => {
-      const note = await prismaClient.note.findFirst({
-        where: { id: parseInt(String(id)) },
-      });
-
-      if (!!note) {
-        setNote(note);
-      }
-    };
-
-    if (!id) return;
-    getNote();
-  }, []);
-
-  const isEditing = note.id > 0;
-
-  // const handleDeleteNote = async () => {
-  //   if (note.id === undefined) return;
-  //   //await prismaClient.note.delete({ where: { id: note.id } });
-  // };
-
-  const editor = useEditorBridge({
-    autofocus: true,
-    avoidIosKeyboard: true,
-    initialContent: note.content,
-    onChange: async () => {
-      const text = await editor.getText();
-      setNote((prev) => ({ ...prev, content: text }));
-
-      if (isEditing) {
+    const handleInsertOrUpdateDb = async () => {
+      if (note.id > 0) {
         await prismaClient.note.update({
           where: { id: note.id },
-          data: { content: text },
+          data: { title: note.title, content: note.content },
         });
       } else {
         const createdNote = await prismaClient.note.create({
           data: {
             title: note.title,
-            content: text,
+            content: note.content,
           },
         });
         setNote((prev) => ({ ...prev, id: createdNote.id }));
       }
-    },
+    };
+
+    handleInsertOrUpdateDb();
+  }, [note]);
+
+  const handleOnChangeTitle = async (text: string) => {
+    setNote((prev) => ({ ...prev, title: text }));
+  };
+
+  const handleOnChangeContent = async () => {
+    const text = await editor.getText();
+    setNote((prev) => ({ ...prev, content: text }));
+  };
+
+  const handleOnDeleteNote = async () => {
+    if (note.id <= 0) return;
+    await prismaClient.note.delete({ where: { id: note.id } });
+    router.back();
+  };
+
+  const editor = useEditorBridge({
+    autofocus: true,
+    avoidIosKeyboard: true,
+    initialContent: note.content,
+    onChange: handleOnChangeContent,
   });
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.title}>{note?.title}</TextInput>
+      <TextInput
+        maxLength={40}
+        onChangeText={handleOnChangeTitle}
+        value={note.title}
+        style={styles.title}
+      />
+      <Button
+        onPress={handleOnDeleteNote}
+        title="Delete note"
+        color="#841584"
+        disabled={note.id <= 0}
+      />
       <RichText editor={editor} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
