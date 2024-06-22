@@ -6,12 +6,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
-  Button,
+  Pressable,
 } from "react-native";
 import { useEditorBridge, RichText, Toolbar } from "@10play/tentap-editor";
 import { prismaClient } from "@/services/db";
 import { Note } from "@prisma/client";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Details() {
   const params = useLocalSearchParams();
@@ -67,18 +68,17 @@ export default function Details() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        maxLength={40}
-        onChangeText={handleOnChangeTitle}
-        value={note.title}
-        style={styles.title}
-      />
-      <Button
-        onPress={handleOnDeleteNote}
-        title="Delete note"
-        color="#841584"
-        disabled={note.id <= 0}
-      />
+      <View style={styles.containerTitle}>
+        <TextInput
+          maxLength={40}
+          onChangeText={handleOnChangeTitle}
+          value={note.title}
+          style={styles.title}
+        />
+        <Pressable onPress={handleOnDeleteNote}>
+          <Ionicons name="trash" size={32} color="red" />
+        </Pressable>
+      </View>
       <RichText editor={editor} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -98,6 +98,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 32,
+    gap: 16,
+  },
+  containerTitle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     gap: 16,
   },
   title: { fontSize: 32, fontWeight: "bold" },
