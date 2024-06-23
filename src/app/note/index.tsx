@@ -8,7 +8,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { useEditorBridge, RichText, Toolbar } from "@10play/tentap-editor";
+import { useEditorBridge, RichText, Toolbar, useEditorContent } from "@10play/tentap-editor";
 import { prismaClient } from "@/services/db";
 import { Note } from "@prisma/client";
 import { router } from "expo-router";
@@ -48,9 +48,8 @@ export default function Details() {
     setNote((prev) => ({ ...prev, title: text }));
   };
 
-  const handleOnChangeContent = async () => {
-    const text = await editor.getText();
-    setNote((prev) => ({ ...prev, content: text }));
+  const handleOnChangeContent = async (content: string) => {
+    setNote((prev) => ({ ...prev, content: content }));
   };
 
   const handleOnDeleteNote = async () => {
@@ -63,8 +62,13 @@ export default function Details() {
     autofocus: true,
     avoidIosKeyboard: true,
     initialContent: note.content,
-    onChange: handleOnChangeContent,
   });
+
+  const content = useEditorContent(editor, { type: "html" });
+  useEffect(() => {
+    // Will render each time content is updated and call onSave
+    content && handleOnChangeContent(content);
+  }, [content]);
 
   return (
     <View style={styles.container}>
