@@ -7,8 +7,14 @@ import {
   Platform,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
-import { useEditorBridge, RichText, Toolbar, useEditorContent } from "@10play/tentap-editor";
+import {
+  useEditorBridge,
+  RichText,
+  Toolbar,
+  useEditorContent,
+} from "@10play/tentap-editor";
 import { prismaClient } from "@/services/db";
 import { Note } from "@prisma/client";
 import { router } from "expo-router";
@@ -52,7 +58,17 @@ export default function Details() {
     setNote((prev) => ({ ...prev, content: content }));
   };
 
-  const handleOnDeleteNote = async () => {
+  const handleOnDeleteNote = () => {
+    Alert.alert("Deletion confirmation", "Do you want to delete this note?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "OK", onPress: deleteNote },
+    ]);
+  };
+
+  const deleteNote = async () => {
     if (note.id <= 0) return;
     await prismaClient.note.delete({ where: { id: note.id } });
     router.back();
@@ -79,7 +95,7 @@ export default function Details() {
           value={note.title}
           style={styles.title}
         />
-        <Pressable onPress={handleOnDeleteNote}>
+        <Pressable onPress={handleOnDeleteNote} disabled={!note.id}>
           <Ionicons name="trash" size={32} color="red" />
         </Pressable>
       </View>
